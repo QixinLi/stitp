@@ -606,12 +606,12 @@ void SampleApp_Send_P2P_Message( void )
     if(GetGas()==0) 
     { 
       //当输出低电平时信号灯亮,检测到气体 
-      HalUARTWrite(0,"GotbadAir",12);//串口显示 
-      HalLcdWriteString("GotbadAir",HAL_LCD_LINE_3);//LCD显示 
+      HalUARTWrite(0,"GotBadAir",12);//串口显示 
+      HalLcdWriteString("GotBadAir",HAL_LCD_LINE_3);//LCD显示 
       if ( AF_DataRequest( &SampleApp_P2P_DstAddr, &SampleApp_epDesc,
                           SAMPLEAPP_P2P_CLUSTERID,
                           12,
-                          "GotbadAir",
+                          "GotBadAir",
                           &SampleApp_TransID,
                           AF_DISCV_ROUTE,
                           AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
