@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Start {
-	public static String srcdir="D:\\stitpdata\\";   //foil算法文件地址目录
+	public static String srcdir="C:\\stitpdata\\";   //foil算法文件地址目录
 	
 	public ArrayList<HumanPass> myHumanData=new ArrayList<HumanPass>();//人体红外热释电数据
 	public ArrayList<Weather> myWeatherData=new ArrayList<Weather>();//天气情况数据
@@ -42,15 +42,9 @@ public class Start {
 		FOIL();
 		//System.out.println("算法执行完毕");
 		myRleave.addAll(myR);
-		for(int i=0;i<myR.size();i++) {
-			System.out.println(myR.get(i).index+":"+myR.get(i).getAttrByIndex(myR.get(i).index));
-		}
 		setRuleSet_Back();
 		FOIL();
 		myRback.addAll(myR);
-		for(int i=0;i<myR.size();i++) {
-			System.out.println(myR.get(i).index+":"+myR.get(i).getAttrByIndex(myR.get(i).index));
-		}
 		try {
 			writetofile();
 		} catch (IOException e) {
@@ -61,7 +55,7 @@ public class Start {
 	
 	public void getHumanPassData() //获取本地人体热释电数据
 	{
-		File file = new File(srcdir+"humanpass1.txt");
+		File file = new File(srcdir+"人体热释电.txt");
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -483,18 +477,78 @@ public class Start {
             file.createNewFile();
         }
         FileWriter fileWriter = new FileWriter(srcdir+"output.txt");
-        String content="";
+        boolean isWeekday=false,isSat=false,isSun=false,isHoliday=false,wCondition=false;
+        int Mindex=24;
         for(int i=0;i<myRleave.size();i++) {
-        	content+=myRleave.get(i).index+":"+myRleave.get(i).getAttrByIndex(myRleave.get(i).index)+";";
+        	if(myRleave.get(i).index<0) {
+        		switch(myRleave.get(i).index) {
+        		case -5:
+        			wCondition=true;
+        			break;
+        		case -4:
+        			isWeekday=true;
+        			break;
+        		case -3:
+        			isSat=true;
+        			break;
+        		case -2:
+        			isSun=true;
+        			break;
+        		case -1:
+        			isHoliday=true;
+        			break;
+        		default:
+        			break;
+        		}
+        	}
+        	else {
+        		if(myRleave.get(i).index<Mindex) {
+        			Mindex=myRleave.get(i).index;
+        		}
+        	}
         }
-        content+="\r\n";
+        String content="{\"foiluserdata\":[{\"Type\":\"leave\",\"Time\":\""+Mindex+"\",\"isWeekday\":\""+isWeekday+"\",\"isSat\":\""+isSat+"\",\"isSun\":\""+isSun+"\",\"isHoliday\":\""+isHoliday+"\",\"wCondition\":\""+wCondition+"\"},{\"Type\":\"back\",\"Time\":\"";
+        isWeekday=false;
+        isSat=false;
+        isSun=false;
+        isHoliday=false;
+        wCondition=false;
+        Mindex=24;
         for(int i=0;i<myRback.size();i++) {
-        	content+=myRback.get(i).index+":"+myRback.get(i).getAttrByIndex(myRback.get(i).index)+";";
+        	if(myRback.get(i).index<0) {
+        		switch(myRback.get(i).index) {
+        		case -5:
+        			wCondition=true;
+        			break;
+        		case -4:
+        			isWeekday=true;
+        			break;
+        		case -3:
+        			isSat=true;
+        			break;
+        		case -2:
+        			isSun=true;
+        			break;
+        		case -1:
+        			isHoliday=true;
+        			break;
+        		default:
+        			break;
+        		}
+        	}
+        	else {
+        		if(myRback.get(i).index>Mindex) {
+        			Mindex=myRback.get(i).index;
+        		}
+        	}
         }
+        content+=Mindex+"\",\"isWeekday\":\""+isWeekday+"\",\"isSat\":\""+isSat+"\",\"isSun\":\""+isSun+"\",\"isHoliday\":\""+isHoliday+"\",\"wCondition\":\""+wCondition+"\"}]}";
+        System.out.println(content);
         BufferedWriter bufferWritter = new BufferedWriter(fileWriter);
         bufferWritter.write(content);
         bufferWritter.close();
 	}
+
 }
 
 

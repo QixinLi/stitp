@@ -104,7 +104,7 @@
 /*********************************************************************
  * GLOBAL VARIABLES
  */
-
+int isGetPassData=0;
 // This list should be filled with Application specific Cluster IDs.
 const cId_t SampleApp_ClusterList[SAMPLEAPP_MAX_CLUSTERS] =
 {
@@ -158,8 +158,8 @@ aps_Group_t SampleApp_Group;
 uint8 SampleAppPeriodicCounter = 0;
 uint8 SampleAppFlashCounter = 0;
 
-//通过域名形式连接到服务器
-char *cipstart = "AT+CIPSTART=\"TCP\",\"106.14.151.117\",35447\r\n"; 
+//通过ip形式连接到服务器
+char *cipstart = "AT+CIPSTART=\"TCP\",\"47.96.162.8\",35447\r\n"; 
 char Seddstr[10] = "abcdefg"; //被发送的字符串
 char *cwjap = "AT+CWJAP=\"Lee\",\"woshierbi\"\r\n";
 char *cwmode = "AT+CWMODE=3\r\n";
@@ -465,9 +465,6 @@ void SampleApp_MessageMSGCB( afIncomingMSGPacket_t *pkt )
   switch ( pkt->clusterId )
   {
     case SAMPLEAPP_P2P_CLUSTERID:
-      HalUARTWrite(0, "T&H:", 4);       //提示接收到数据
-      HalUARTWrite(0, pkt->cmd.Data, pkt->cmd.DataLength); //输出接收到的数据
-      HalUARTWrite(0, "\n", 1);         // 回车换行
       WifiSendData(pkt->cmd.Data);
       break;    
     case SAMPLEAPP_PERIODIC_CLUSTERID:
@@ -606,12 +603,12 @@ void SampleApp_Send_P2P_Message( void )
     if(GetGas()==0) 
     { 
       //当输出低电平时信号灯亮,检测到气体 
-      HalUARTWrite(0,"GotBadAir",12);//串口显示 
-      HalLcdWriteString("GotBadAir",HAL_LCD_LINE_3);//LCD显示 
+      HalUARTWrite(0,"GotbadAir",9);//串口显示 
+      HalLcdWriteString("GotbadAir",HAL_LCD_LINE_3);//LCD显示 
       if ( AF_DataRequest( &SampleApp_P2P_DstAddr, &SampleApp_epDesc,
                           SAMPLEAPP_P2P_CLUSTERID,
                           12,
-                          "GotBadAir",
+                          "GotbadAir",
                           &SampleApp_TransID,
                           AF_DISCV_ROUTE,
                           AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
@@ -626,9 +623,11 @@ void SampleApp_Send_P2P_Message( void )
   if(GetRT()==1)
   {
     MicroWait(10000);//Wait 10ms
-    if(GetRT()==1) 
+    if(GetRT()==1&&isGetPassData==0) 
     { 
       //当输出高电平时信号灯亮,检测到有人经过 
+      char* gotperson="GotPerson";
+      isGetPassData=1;
       HalUARTWrite(0,"GotPerson",12);//串口显示 
       HalLcdWriteString("GotPerson",HAL_LCD_LINE_3);//LCD显示 
       if ( AF_DataRequest( &SampleApp_P2P_DstAddr, &SampleApp_epDesc,
@@ -645,6 +644,9 @@ void SampleApp_Send_P2P_Message( void )
     // Error occurred in request to send.
       }
     } 
+  }
+  else{
+    isGetPassData=0;
   }
 }
 
