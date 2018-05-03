@@ -5,7 +5,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";  
 %>
 <%
-InputStreamReader reader = new InputStreamReader(new FileInputStream("C:\\stitpdata\\气体.txt")); // 建立一个输入流对象reader  
+InputStreamReader reader = new InputStreamReader(new FileInputStream("C:\\stitpdata\\人体热释电.txt")); // 建立一个输入流对象reader  
 BufferedReader br = new BufferedReader(reader); // 建立一个对象，它把文件内容转成计算机能读懂的语言  
 String line = "";  
 String qiti="";
