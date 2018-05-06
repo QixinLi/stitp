@@ -52,7 +52,6 @@ public class Start {
 			e.printStackTrace();
 		}
 	}
-	
 	public void getHumanPassData() //获取本地人体热释电数据
 	{
 		File file = new File(srcdir+"人体热释电.txt");
@@ -87,7 +86,6 @@ public class Start {
             }
         }
 	}
-	
 	public void getWeatherData() //获取本地天气情况数据
 	{
 		File file = new File(srcdir+"天气情况.txt");
@@ -121,7 +119,6 @@ public class Start {
             }
         }
 	}
-	
 	public void getHolidayData() //获取法定节假日数据
 	{
 		File file = new File(srcdir+"节假日情况.txt");
@@ -154,7 +151,6 @@ public class Start {
             }
         }
 	}
-
 	public void setRuleSet_Leave() //设置规则集（针对Leave）
 	{
 		positiveSet.clear();
@@ -202,7 +198,6 @@ public class Start {
 			}
 		}
 	}
-	
 	public void setRuleSet_Back() //设置规则集（针对Back）
 	{
 		positiveSet.clear();
@@ -239,7 +234,6 @@ public class Start {
 			}
 		}
 	}
-
 	public void FOIL() //FOIL算法本体
 	{
 		myR.clear();
@@ -263,7 +257,6 @@ public class Start {
 			deletePbyr();
 		}
 	}
-	
 	public void findMaxGain() //找到目前Gain值最大的属性p
 	{
 		double maxGain=0;
@@ -291,7 +284,6 @@ public class Start {
 			}
 		}
 	}
-	
 	public int getP_Star(int index,boolean setbool) //得出|P*|的值
 	{
 		int p_star=0;
@@ -302,7 +294,6 @@ public class Start {
 		}
 		return p_star;
 	}
-	
 	public int getN_Star(int index,boolean setbool) //得出|N*|的值
 	{
 		int n_star=0;
@@ -313,7 +304,6 @@ public class Start {
 		}
 		return n_star;
 	}
-
 	public void deleteIrregularPNpie(int index,boolean bool) //删除P',N'中所有不符合r的行
 	{
 		for(int k=0;k<myr.size();k++) 
@@ -340,7 +330,6 @@ public class Start {
 		}
 
 	}
-	
 	public void addrtoR() //将属性r添加到R（忽略其中的重复属性）
 	{
 		int [][]maxindex=new int[myr.size()][2];
@@ -364,7 +353,6 @@ public class Start {
 			}
 		}
 	}
-	
 	public void deletePbyr() //将P中不符合r的行删去
 	{
 		for(int i=0;i<positiveSet.size();i++) {
@@ -381,7 +369,6 @@ public class Start {
 			}
 		}
 	}
-	
 	public long getDayBetween(String sDate,String bDate) //获取两个日期之间相隔的天数
 	{
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -405,7 +392,6 @@ public class Start {
 		}
 		return day;
 	}
-	
 	public boolean getSat(int year,int month,int day) //获取指定日期是否是周六
 	{
 		for(int i=0;i<myHolidayData.size();i++)
@@ -421,7 +407,6 @@ public class Start {
 		}
 		return false;
 	}
-	
 	public boolean getSun(int year,int month,int day) //获取指定日期是否是周日
 	{
 		for(int i=0;i<myHolidayData.size();i++)
@@ -437,7 +422,6 @@ public class Start {
 		}
 		return false;
 	}
-	
 	public boolean getHoliday(int year,int month,int day) //获取指定日期是否是节假日
 	{
 		for(int i=0;i<myHolidayData.size();i++)
@@ -453,7 +437,6 @@ public class Start {
 		}
 		return false;
 	}
-
 	public boolean getWCondition(int year,int month,int day) //获取指定日期的天气情况
 	{
 		for(int i=0;i<myWeatherData.size();i++)
@@ -469,7 +452,6 @@ public class Start {
 		}
 		return true;
 	}
-
 	public void writetofile() throws IOException {
 		File file = new File(srcdir+"output.txt");
         if(!file.exists())
@@ -548,7 +530,6 @@ public class Start {
         bufferWritter.write(content);
         bufferWritter.close();
 	}
-
 }
 
 

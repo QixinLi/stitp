@@ -8,8 +8,8 @@ public class SocketService {
         //服务端在20006端口监听客户端请求的TCP连接  
         ServerSocket server = new ServerSocket(35447);  
         //ServerThread.getCurrentTime();
-        ServerThread.WriteData(ServerThread.getCurrentTime(),"C:\\stitpdata\\人体热释电.txt");
-        System.out.println("服务器创建成功！");  
+        //ServerThread.WriteData(ServerThread.getCurrentTime(),"D:\\stitpdata\\人体热释电.txt");
+        System.out.println("服务器创建成功！");  System.out.println(ServerThread.getCurrentTime());
         Socket client = null;  
         boolean f = true;  
         while(f){  
@@ -45,11 +45,19 @@ class ServerThread implements Runnable {
             	buf = new BufferedReader(new InputStreamReader(in));  
             	int len=0;
             	String msg="";
+            	boolean isFirst=true;
             	while((len=buf.read())!=0)
             	{
             		if((char)len!='#')
             		{
-            			msg+=(char)len;
+            			if(isFirst)
+            			{
+            				isFirst=false;
+            			}
+            			else {
+            				msg+=(char)len;
+            			}
+            			
             			//System.out.print((char)len);
             		}
             		else
@@ -57,6 +65,7 @@ class ServerThread implements Runnable {
             			break;
             		}
             	}
+            	msg.replaceAll("\r|\n|\0","");
             	System.out.print("收到消息:"+msg);
             	System.out.println();
             	if(msg.equals("GotBadAir"))
@@ -72,12 +81,12 @@ class ServerThread implements Runnable {
             		String w_s[] = msg.split(",");
             		if(w_s.length==2)
             		{
-            			WriteData(w_s[0]+","+getCurrentTime(),"C:\\stitpdata\\温度.txt");
-            			WriteData(w_s[1]+","+getCurrentTime(),"C:\\stitpdata\\湿度.txt");
+            			WriteData(w_s[0]+"-"+getCurrentTime(),"C:\\stitpdata\\温度.txt");
+            			WriteData(w_s[1]+"-"+getCurrentTime(),"C:\\stitpdata\\湿度.txt");
             		}
             		else
             		{
-            			System.out.println("数据解析格式错误");
+            			System.out.println("数据格式解析错误");
             		}
             	}
             	buf.mark(0);
@@ -105,7 +114,7 @@ class ServerThread implements Runnable {
     static public String getCurrentTime() {
     	Calendar c = Calendar.getInstance();//可以对每个时间域单独修改   
     	int year = c.get(Calendar.YEAR);  
-    	int month = c.get(Calendar.MONTH);  
+    	int month = c.get(Calendar.MONTH)+1;  
     	int date = c.get(Calendar.DATE);    
     	int hour = c.get(Calendar.HOUR_OF_DAY);   
     	int minute = c.get(Calendar.MINUTE);   
