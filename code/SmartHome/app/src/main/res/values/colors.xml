@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="flowgreen">#2cab78</color>
+    <color name="aliceblue">#f0f8ff</color>
+    <color name="transparent">#00000000</color>
+    <color name="halfAliceBlue">#80f0f8ff</color>
+    <color name="fontColor">#E6E6FA</color>
+</resources>
