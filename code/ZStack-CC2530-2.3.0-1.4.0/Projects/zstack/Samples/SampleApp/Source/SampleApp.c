@@ -104,6 +104,7 @@
 /*********************************************************************
  * GLOBAL VARIABLES
  */
+int wsindex=0;
 int isGetPassData=0;
 // This list should be filled with Application specific Cluster IDs.
 const cId_t SampleApp_ClusterList[SAMPLEAPP_MAX_CLUSTERS] =
@@ -582,19 +583,30 @@ void SampleApp_Send_P2P_Message( void )
   } 
   LCD_P8x16Str(44, 4, temp);
   LCD_P8x16Str(44, 6, humidity);
- 
-  if ( AF_DataRequest( &SampleApp_P2P_DstAddr, &SampleApp_epDesc,
+  
+  if(wsindex == 1){
+    wsindex++;
+    if ( AF_DataRequest( &SampleApp_P2P_DstAddr, &SampleApp_epDesc,
                        SAMPLEAPP_P2P_CLUSTERID,
                        6,
                        strTemp,
                        &SampleApp_TransID,
                        AF_DISCV_ROUTE,
                        AF_DEFAULT_RADIUS ) == afStatus_SUCCESS )
-  {
+    {
+    }
+    else
+    {
+      // Error occurred in request to send.
+    }
   }
-  else
-  {
-    // Error occurred in request to send.
+  else{
+    if(wsindex == 0){
+      wsindex++;
+    }
+  }
+  if(wsindex==120){
+    wsindex=1;
   }
   
   if(GetGas()==0)
